@@ -1,0 +1,19 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Import lại dữ liệu từ file SQL -->
+    <changeSet id="1" author="admin" runAlways="true">
+        <sqlFile path="classpath:db/data/database_VKS.sql" encoding="utf8"/>
+    </changeSet>
+
+    <changeSet id="2" author="admin">
+        <tagDatabase tag="import-complete-v1"/>
+    </changeSet>
+    <changeSet id="3" author="admin">
+        <sql>SET FOREIGN_KEY_CHECKS = 1;</sql>
+    </changeSet>
+
+</databaseChangeLog>

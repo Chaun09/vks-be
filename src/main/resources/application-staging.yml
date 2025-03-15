@@ -1,0 +1,18 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 600000
+      connection-timeout: 30000
+    username: vienkiemsat
+    password: vks@2024
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://100.67.168.11:3309/uat-db
+app:
+  host: http://100.113.61.3:9000
+
