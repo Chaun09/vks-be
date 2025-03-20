@@ -16,10 +16,7 @@ import vn.eledevo.vksbe.dto.request.AccountRequest;
 import vn.eledevo.vksbe.dto.request.account.AccountCaseRequest;
 import vn.eledevo.vksbe.dto.response.account.AccountCaseResponse;
 import vn.eledevo.vksbe.dto.response.account.AccountSwapResponse;
-import vn.eledevo.vksbe.dto.response.account.StakeHolderResponse;
 import vn.eledevo.vksbe.entity.Accounts;
-import vn.eledevo.vksbe.entity.Profiles;
-import vn.eledevo.vksbe.entity.Roles;
 
 public interface AccountRepository extends BaseRepository<Accounts, Long> {
     @Query("SELECT a,r.code from Accounts a inner join Roles r on a.roles.id = r.id  where a.username =:username")
@@ -202,12 +199,15 @@ public interface AccountRepository extends BaseRepository<Accounts, Long> {
     @Query(value = "SELECT department_id FROM accounts WHERE username = :username", nativeQuery = true)
     Long getDepartment(@Param("username") String username);
 
-    @Query(value = "SELECT accounts.*, profiles.id AS profiles_id, profiles.avatar, profiles.full_name FROM accounts  INNER JOIN profiles  ON  accounts.id = profiles.account_id  WHERE department_id = :department_id", nativeQuery = true)
+    @Query(
+            value =
+                    "SELECT accounts.*, profiles.id AS profiles_id, profiles.avatar, profiles.full_name FROM accounts  INNER JOIN profiles  ON  accounts.id = profiles.account_id  WHERE department_id = :department_id",
+            nativeQuery = true)
     Page getStakeHolderById(@Param("department_id") Long departmentId, Pageable pageable);
 
-//    @Query(value = "SELECT * FROM roles WHERE role_id = :role_id", nativeQuery = true)
-//    Page<Roles> getRolesById(@Param("role_id") Long roleId, Pageable pageable);
-//
-//    @Query(value = "SELECT * FROM profiles WHERE account_id = :account_id", nativeQuery = true)
-//    Page<Profiles> getProfilesById(@Param("account_id") Long accountId, Pageable pageable);
+    //    @Query(value = "SELECT * FROM roles WHERE role_id = :role_id", nativeQuery = true)
+    //    Page<Roles> getRolesById(@Param("role_id") Long roleId, Pageable pageable);
+    //
+    //    @Query(value = "SELECT * FROM profiles WHERE account_id = :account_id", nativeQuery = true)
+    //    Page<Profiles> getProfilesById(@Param("account_id") Long accountId, Pageable pageable);
 }

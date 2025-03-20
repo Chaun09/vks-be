@@ -1,5 +1,7 @@
 package vn.eledevo.vksbe.dto.response.cases;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
@@ -11,4 +13,3 @@ public class StakeHolderDto {
     private String avatar;
     private String fullName;
 }
-

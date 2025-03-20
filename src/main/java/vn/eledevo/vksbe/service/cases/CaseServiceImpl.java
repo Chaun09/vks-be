@@ -23,13 +23,12 @@ import vn.eledevo.vksbe.constant.ErrorCodes.*;
 import vn.eledevo.vksbe.dto.model.account.AccountDownloadResponse;
 import vn.eledevo.vksbe.dto.request.cases.*;
 import vn.eledevo.vksbe.dto.response.*;
-import vn.eledevo.vksbe.dto.response.account.StakeHolderResponse;
 import vn.eledevo.vksbe.dto.response.account_case.AccountDownloadCaseResponse;
+import vn.eledevo.vksbe.dto.response.cases.CasesDashBoard;
 import vn.eledevo.vksbe.dto.response.citizen.CitizenCaseResponse;
 import vn.eledevo.vksbe.entity.*;
 import vn.eledevo.vksbe.exception.ApiException;
 import vn.eledevo.vksbe.exception.ValidationException;
-import vn.eledevo.vksbe.mapper.AccountMapper;
 import vn.eledevo.vksbe.repository.*;
 import vn.eledevo.vksbe.service.histories.HistoryService;
 import vn.eledevo.vksbe.utils.SecurityUtils;
@@ -67,7 +66,7 @@ public class CaseServiceImpl implements CaseService {
         return !accounts.getDepartments().getId().equals(cases.getDepartments().getId());
     }
     //    Chau code create
-    private Long getCaseId(CaseCreateRequest caseCreateRequest){
+    private Long getCaseId(CaseCreateRequest caseCreateRequest) {
         Cases cases = new Cases();
         Long loginAccount = SecurityUtils.getDepartmentId();
         Optional<Departments> departments = departmentRepository.findById(caseCreateRequest.getDepartmentId());
@@ -95,10 +94,10 @@ public class CaseServiceImpl implements CaseService {
         Optional<Departments> departments = departmentRepository.findById(caseCreateRequest.getDepartmentId());
         Long loginAccount = SecurityUtils.getDepartmentId();
         if (loginAccount.equals(1L) || loginAccount.equals(departments.get().getId())) {
-                return getCaseId(caseCreateRequest);
-        }
-        else if (roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.PHO_PHONG.name()) || roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.KIEM_SAT_VIEN.name())) {
-                return getCaseId(caseCreateRequest);
+            return getCaseId(caseCreateRequest);
+        } else if (roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.PHO_PHONG.name())
+                || roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.KIEM_SAT_VIEN.name())) {
+            return getCaseId(caseCreateRequest);
         }
         return null;
     }
@@ -134,13 +133,18 @@ public class CaseServiceImpl implements CaseService {
 
     //    Chau code get all stake holder
     @Override
-    public ResponseFilter<Page> getAllStakeHolderByCaseId(Long id, int page, int pageSize)
-            throws ApiException {
-        return responseStakeHolder(id, page, pageSize);
+    public ResponseFilter<Page> getAllStakeHolderByCaseId(Long id, int page, int pageSize) throws ApiException {
+        Long loginAccounts = SecurityUtils.getDepartmentId();
+        if (loginAccounts.equals(1L)) {
+            return responseStakeHolder(id, page, pageSize);
+        } else if (roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.PHO_PHONG.name())
+                || roleRepository.getRole(SecurityUtils.getRoleId()).equals(Role.KIEM_SAT_VIEN.name())) {
+            return responseStakeHolder(id, page, pageSize);
+        }
+        return null;
     }
 
-    private ResponseFilter<Page> responseStakeHolder(Long id, int page, int pageSize)
-            throws ApiException {
+    private ResponseFilter<Page> responseStakeHolder(Long id, int page, int pageSize) throws ApiException {
         Cases cases = getCaseById(id);
         Accounts loginAccount = SecurityUtils.getUser();
         validateAccountPermissionCase(loginAccount, cases);
@@ -235,6 +239,26 @@ public class CaseServiceImpl implements CaseService {
         return new ResponseFilter<>(
                 pages.getContent(), (int) pages.getTotalElements(), pages.getSize(), page, pages.getTotalPages());
     }
+
+    @Override
+    public ArrayList getAllCases(String case_type){
+        Set<Object> set = new LinkedHashSet<>();
+        List cases = caseRepository.getAllCase(case_type);
+        List<Object[]> list = new ArrayList<>();
+        for(int i = 0; i < cases.size(); i++){
+           list.add((Object[])cases.get(i));
+        }
+        for(Object[] ls : list){
+           for(int i = 0; i < ls.length; i++){
+               set.add(ls[1]);
+           }
+        }
+        System.out.println(set);
+
+        return caseRepository.getAllCase(case_type);
+
+    }
+
 
     @Override
     public ResponseFilter<CitizenCaseResponse> getAllInvestigatorByCaseId(

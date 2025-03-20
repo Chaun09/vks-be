@@ -1,5 +1,7 @@
 package vn.eledevo.vksbe.repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import vn.eledevo.vksbe.dto.model.account.AccountDownloadResponse;
 import vn.eledevo.vksbe.dto.response.account.AccountFilterCaseResponse;
+import vn.eledevo.vksbe.dto.response.cases.CasesDashBoard;
 import vn.eledevo.vksbe.entity.Cases;
 
 public interface CaseRepository extends BaseRepository<Cases, Long> {
@@ -65,4 +68,8 @@ public interface CaseRepository extends BaseRepository<Cases, Long> {
             + "JOIN Roles r ON r.id = a.roles.id "
             + "WHERE ac.cases.id = :caseId AND ac.hasAccess = true AND ac.isProsecutor = true")
     List<AccountFilterCaseResponse> getProsecutorOfflineList(@Param("caseId") Long caseId);
+
+    @Query(value = "SELECT YEAR(created_at) AS year, MONTH(created_at) AS month ,COUNT(*) AS total FROM cases WHERE case_type = :case_type GROUP BY YEAR(created_at), MONTH(created_at) ORDER BY year DESC, month DESC;", nativeQuery = true)
+    ArrayList getAllCase(@Param("case_type") String case_type);
+
 }

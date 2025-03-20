@@ -5,19 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import vn.eledevo.vksbe.dto.response.account.AccountResponse;
-import vn.eledevo.vksbe.dto.response.account.StakeHolderResponse;
 import vn.eledevo.vksbe.entity.Accounts;
-import vn.eledevo.vksbe.entity.Profiles;
-import vn.eledevo.vksbe.entity.Roles;
-
 
 @Component
-
 public class AccountMapper {
     public AccountResponse toResponse(Accounts e) {
         if (Objects.isNull(e)) {
@@ -54,12 +48,14 @@ public class AccountMapper {
         return list;
     }
 
-//    public static StakeHolderResponse mappingStakeDBToStakeRes(Page page) {
-//
-//        return StakeHolderResponse.builder()
-//                .id(page.getFirstResult())
-//                .build();
-//    }
+    //    public static StakeHolderResponse mappingStakeDBToStakeRes(Page page) {
+    //
+    //        return StakeHolderResponse.builder()
+    //                .id(page.getFirstResult())
+    //                .build();
+    //    }
+
+
 
 
 }

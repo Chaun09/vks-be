@@ -1,6 +1,7 @@
 package vn.eledevo.vksbe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import jakarta.validation.Valid;
 
@@ -25,13 +26,12 @@ import vn.eledevo.vksbe.dto.request.cases.CaseCreateRequest;
 import vn.eledevo.vksbe.dto.request.cases.CaseUpdateRequest;
 import vn.eledevo.vksbe.dto.request.history.HistoryFilterRequest;
 import vn.eledevo.vksbe.dto.response.*;
-import vn.eledevo.vksbe.dto.response.account.StakeHolderResponse;
 import vn.eledevo.vksbe.dto.response.account_case.AccountDownloadCaseResponse;
 import vn.eledevo.vksbe.dto.response.case_flow.CaseFlowResponse;
 import vn.eledevo.vksbe.dto.response.cases.CaseId;
+import vn.eledevo.vksbe.dto.response.cases.CasesDashBoard;
 import vn.eledevo.vksbe.dto.response.citizen.CitizenCaseResponse;
 import vn.eledevo.vksbe.dto.response.history.HistoryResponse;
-import vn.eledevo.vksbe.entity.Accounts;
 import vn.eledevo.vksbe.exception.ApiException;
 import vn.eledevo.vksbe.exception.ValidationException;
 import vn.eledevo.vksbe.service.account.AccountService;
@@ -221,4 +221,11 @@ public class CaseController {
         //        }
         return ApiResponse.ok(caseId);
     }
+
+    @PostMapping("/dashboard")
+    @Operation(summary = "Show dashboard")
+    public List showDashBoard(String case_type){
+        return caseService.getAllCases(case_type);
+    }
+
 }

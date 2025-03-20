@@ -1,9 +1,7 @@
 package vn.eledevo.vksbe.dto.response.account;
 
-
 import lombok.Builder;
 import lombok.Data;
-
 
 @Builder
 @Data
